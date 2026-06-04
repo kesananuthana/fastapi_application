@@ -1,0 +1,30 @@
+services:
+  firstcontainer: # this is container name
+    build: . # . represents current folder
+    command: uvicorn first:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+  new1container:
+    build: .
+    command: python new1.py
+  usercontainer:
+    build: .
+    command: uvicorn user_information.main:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+  employeecontainer:
+    build: .
+    command: uvicorn users.main:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+  personcontainer:
+    build: .
+    command: uvicorn person.main:app --host 0.0.0.0 --port 8003
+    ports:
+      - "8003:8003"
+
+
+
+#It contains 2 files firstcontainer and new1container.
+# when we run docker compose up . Docker Compose creates a container for this service.
+# Docker Compose looks for a Dockerfile in the current directory and builds an image from it.
