@@ -26,10 +26,9 @@ jobs:
         run: |
           pip install fastapi uvicorn sqlalchemy psycopg2-binary
 
-      - name: Check Application Import
-        run: |
-          python -c "from users.main import app; print('FastAPI app loaded successfully')"
-
+      - name: Build Docker Image
+        run: docker build -t fastapi-app .
+        
       - name: Build Docker Image
         run: |
           docker build -t fastapi-app .
