@@ -28,7 +28,7 @@ jobs:
 
       - name: Check Application Import
         run: |
-          python -c "from main import app; print('FastAPI app loaded successfully')"
+          python -c "from users.main import app; print('FastAPI app loaded successfully')"
 
       - name: Build Docker Image
         run: |
