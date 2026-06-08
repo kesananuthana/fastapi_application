@@ -1,0 +1,39 @@
+workflow:
+
+name: Run and build application
+
+on: push # event
+
+jobs:
+  build:  // build and test are job names
+    runs-on: ubuntu-latest # runs on means what kind of operating system we used
+    steps:
+      - name: My Code
+        uses: actions/checkout@v2
+      - name: Install pacakges
+        run: pip install fastapi
+  test:
+    runs-on: ubuntu-latest
+    needs: build # it means after build job test job will run
+    steps:
+
+build and test is the job name.
+Inside the job, there are multiple steps.
+All steps run on the same Ubuntu machine.
+GitHub Actions doesn't have fixed "job types." You create jobs based on their purpose.
+1. Build Job
+Compiles/builds the application.
+Purpose:
+Build application
+Build Docker image
+2. Test Job
+Runs automated tests.
+Purpose:
+Check code quality
+Catch bugs before deployment
+3.Deploy Job:
+Deploys the application.
+Purpose:
+Deploy to AWS, Azure, Kubernetes, etc.
+Job Dependencies (needs):
+Sometimes you want one job to run only after another succeeds.
