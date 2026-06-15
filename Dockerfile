@@ -1,5 +1,11 @@
 FROM python:3.10-slim
+
 WORKDIR /app
-copy . .
-RUN pip install fastapi uvicorn sqlalchemy psycopg2-binary
-CMD ["uvicorn", "first:app", "--host" ,"0.0.0.0", "--port" ,"7000", "--reload"]
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["sh", "-c", "uvicorn first:app --host 0.0.0.0 --port ${PORT:-8000}"]
