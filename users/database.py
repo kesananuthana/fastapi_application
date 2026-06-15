@@ -1,8 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
-db_url ="postgresql://postgres:nuthana@localhost/employee"
+load_dotenv()
+db_url = os.getenv("USERS_DB_URL")
+if not db_url:
+    raise RuntimeError("PERSON_DB_URL environment variable is not defined")
 
 #db_url =  "postgresql://postgres:nuthana@host.docker.internal:5432/employee"
 engine = create_engine(db_url)
