@@ -9,13 +9,24 @@ jobs:
     runs-on: ubuntu-latest # runs on means what kind of operating system we used
     steps:
       - name: My Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  //Download repository code
       - name: Install pacakges
-        run: pip install fastapi
-  test:
+        run: pip install fastapi // install python packages
+  test: 
     runs-on: ubuntu-latest
     needs: build # it means after build job test job will run
     steps:
+
+worklfow contains these :
+Events (on)
+Jobs
+Steps
+Actions (uses)
+Commands (run)
+Environment variables (env)
+Secrets
+Running tests
+Building Docker images
 
 build and test is the job name.
 Inside the job, there are multiple steps.
@@ -37,3 +48,51 @@ Purpose:
 Deploy to AWS, Azure, Kubernetes, etc.
 Job Dependencies (needs):
 Sometimes you want one job to run only after another succeeds.
+
+Steps:
+A step is a single task inside a job.
+Each step performs one action, such as:
+Checking out code
+Installing Python
+Installing dependencies
+Running tests
+Building a Docker image
+Types of Steps 
+1. uses Step: Uses a pre-built action created by GitHub or the community. This action checks out your repository code.
+2.run Step: Executes shell commands.
+If any step is failed , next step cannot run .it stops
+
+Actions:
+What are Actions in GitHub Actions?
+An Action is a reusable piece of code that performs a specific task in a workflow.Instead of writing all the code yourself, you can use an existing action.
+You use an action with the uses keyword.
+Why do we use Actions?
+Without actions, you would have to write many commands manually.
+For example, to download your repository code, you could write scripts yourself. Instead, GitHub provides:
+ex: - uses: actions/checkout@v4
+This action automatically:
+Clones your repository
+Makes the code available to the workflow
+uses is not an action.
+uses is a keyword inside a step that tells GitHub Actions to run an action.
+
+Secrets:
+Secrets are used to store sensitive information securely.
+Examples: Docker Hub username/password
+AWS access keys
+How to Add a Secret :
+GitHub Repository → Settings → Secrets and variables → Actions → New repository secret
+
+Running Tests:
+Tests verify that your code works correctly before it is merged or deployed.
+For a FastAPI project, you might use pytest.
+
+Building Docker Images:
+A Docker image contains:
+Application code
+Dependencies
+Runtime environment
+
+without writing docker file the ci can execute or not:
+Yes, CI can execute without a Dockerfile.
+A Dockerfile is only needed if your CI pipeline includes a step to build a Docker image.

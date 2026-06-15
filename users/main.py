@@ -1,9 +1,9 @@
-from fastapi import FastAPI,Depends
+from fastapi import APIRouter,Depends
 from sqlalchemy.orm import Session
 from  .database import *
 from .models import *
 
-app=FastAPI()
+router = APIRouter()
 Base.metadata.create_all(bind=engine)
 def get_db():
     db=SessionLocal()
@@ -13,7 +13,7 @@ def get_db():
         db.close()
 
 
-@app.get("/employee")
+@router.get("/employee")
 def users(db:Session=Depends(get_db)):
     users = db.query(Employee).all()
     return {"data":users}

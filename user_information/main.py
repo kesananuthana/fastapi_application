@@ -1,5 +1,5 @@
 
-from fastapi import FastAPI,Depends, HTTPException,requests
+from fastapi import APIRouter,Depends, HTTPException,requests
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,15 +9,16 @@ from .crud import *
 from .schema import *
 import datetime
 
-app=FastAPI()
+router = APIRouter()
 
-app.add_middleware(
+
+'''router.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  
-)
+)'''
 
 
 Base.metadata.create_all(bind=engine)
@@ -31,7 +32,7 @@ def get_db():
 
 
 
-@app.get('/add-column')
+@router.get('/add-column')
 def add_column(db:Session=Depends(get_db)):
     query=text('Alter table userinfo add Column is_admin Boolean')
     db.execute(query)
@@ -39,14 +40,14 @@ def add_column(db:Session=Depends(get_db)):
     return {'msg':'column added successfully'}
 
 
-@app.post('/insert-data')
+@router.post('/insert-data')
 def create_api(userinfo:UserInformationDetails, db: Session = Depends(get_db)):
     api_created_at = datetime.datetime.utcnow()
     db_userinfo=create_user_info_data(db,userinfo)
     return {"data": db_userinfo, "api_created_at": str(api_created_at)}
 
 
-@app.get("/users/")
+@router.get("/users/")
 def read_user(db: Session = Depends(get_db)):
     try:
         api_created_at = datetime.datetime.utcnow()
@@ -60,7 +61,7 @@ def read_user(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@app.get("/users/{user_id}")
+@router.get("/users/{user_id}")
 def read_user(user_id: str, db: Session = Depends(get_db)):
     try:
         user = db.query(UserInfo).filter(UserInfo.user_id == user_id).first()
@@ -74,7 +75,7 @@ def read_user(user_id: str, db: Session = Depends(get_db)):
 
 
 #update details
-@app.put("/users/{user_id}/{password}")
+@router.put("/users/{user_id}/{password}")
 def read_user(user_id: str,password:str,db: Session = Depends(get_db)):
     try:
         db_user = db.query(UserInfo).filter(UserInfo.user_id == user_id).first()
@@ -91,7 +92,7 @@ def read_user(user_id: str,password:str,db: Session = Depends(get_db)):
 
 
 #delete details
-@app.delete('/deletedetails/{profile_id}')
+@router.delete('/deletedetails/{profile_id}')
 def delete_details(profile_id: str, db: Session = Depends(get_db)):
     try:
         deleted_rows = db.query(UserInfo).filter(UserInfo.profile_id == profile_id).delete()
@@ -113,7 +114,7 @@ def delete_details(profile_id: str, db: Session = Depends(get_db)):
 
 
 #insert api response in new table
-@app.post('/insertdata-in-new-table')
+@router.post('/insertdata-in-new-table')
 def insert_data_new_table(db:Session=Depends(get_db)):
     api_created_at = datetime.datetime.utcnow()
     response=requests.get('http://127.0.0.1:8000/users/')
