@@ -21,3 +21,7 @@ def users(db:Session=Depends(get_db)):
 @router.get("/hello")
 def user():
     return {"message":"hello world"}
+
+@router.get("/person/{name}")
+def person(name:str):
+    return {"message": f"hello {name}"}
