@@ -28,10 +28,6 @@ jobs:
 
       - name: Build Docker Image
         run: docker build -t fastapi-app .
-        
-      - name: Build Docker Image
-        run: |
-          docker build -t fastapi-app .
       
       - name: Trigger Render Deploy
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
